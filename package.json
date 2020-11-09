@@ -1,0 +1,26 @@
+{
+  "name": "fitness_tracker",
+  "version": "1.0.0",
+  "description": "Fitness Tracker using a NoSQL DB",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miadehaan/Fitness_Tracker.git"
+  },
+  "author": "Mia de Haan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miadehaan/Fitness_Tracker/issues"
+  },
+  "homepage": "https://github.com/miadehaan/Fitness_Tracker#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongojs": "^3.1.0",
+    "mongoose": "^5.10.13",
+    "path": "^0.12.7"
+  }
+}
