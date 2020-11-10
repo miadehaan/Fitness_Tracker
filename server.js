@@ -1,8 +1,7 @@
 const express = require("express");
-const mongojs = require("mongojs");
 const mongoose = require("mongoose");
 const path = require("path");
-const Workout = require("../models/workouts.js");
+const db = require("./models");
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,14 +12,19 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const databaseUrl = "workout";
-const collections = ["workouts"];
+// const databaseUrl = "workout";
+// const collections = ["workouts"];
+// const db = mongojs(databaseUrl, collections);
+// db.on("error", error => {
+//   console.log("Database Error:", error);
+// });
 
-const db = mongojs(databaseUrl, collections);
 
-db.on("error", error => {
-  console.log("Database Error:", error);
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+  useNewUrlParser: true,
+  useFindAndModify: false
 });
+
 
 // Routes -------------------------------------------------------------
 app.get("/", (req, res) => {
@@ -31,47 +35,77 @@ app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/exercise.html"));
 });
 
+app.get("/stats", (req, res) => {
+  res.sendFile(path.join(__dirname + "/public/stats.html"));
+});
+
 // Get Last Workout
-app.get("/api/workouts", (req,res) => {
-  
-  
-});
+// app.get("/api/workouts", (req,res) => {
+  // db.Workout.find({  })
+  // .populate("workouts")
+  // .then(dbWorkouts => {
+  //   console.log(dbWorkouts);
 
-// Add exercises to a previous workout plan. 
+  //   res.json(dbWorkouts);
+  // })
+  // .catch(err => {
+  //   res.json(err);
+  // });
+  
+// });
+
+
+// Add exercises for NEW workout plan 
 // PUT: /api/workouts/:id
-app.put("/api/workouts/:id", (req,res) => {
+app.put("/api/workouts/:id", ({body}, res) => {
+  console.log(body.type); // form information
+  let data = "";
+  if (body.type === "cardio") {
+    data = "cardio";
+  } else if (body.type === "resistance") {
+    data = "resistance";
+  }
 
+  db.Workout.insert(data)
+    .then(dbExercises => {
+      console.log(dbExercises);
+
+      res.json(dbExercises);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
 });
 
+// Create new Workout from exercises that were added
+app.post("/api/workouts", ({body}, res) => {
 
-// Add exercises to a new workout plan/DB collection
-app.post("/api/workouts", (req,res) => {
-  db.workouts.insert(req.body, (err, data) => {
-    console.log(req.body); // pulls info from input (exercise) form on browser
+  // db.Workout.create(body)
+  // .then(dbWorkouts => {
+  //   console.log(dbWorkouts);
 
-    if (err){
-      throw err;
-    } 
+  //   res.json(dbWorkouts);
+  // })
+  // .catch(err => {
+  //   res.status(400).json(err);
+  // });
 
-    // console.log(data);
-    res.send(data); 
-  });
 });
-
 
 
 // View the combined weight of multiple exercises on the `stats` page.
 // GET: /api/workouts/range
 app.get("/api/workouts/range", (req, res) => {
-  // db.notes.find({}, (err, data) => {
-  //   if(err) {
-  //     throw err;
-  //   }
+  db.Workout.find({})
+  .populate("workouts")
+  .then(dbWorkouts => {
+    console.log(dbWorkouts);
 
-  //   // console.log(data); // Should show all data
-  //   res.json(data);
-
-  // });
+    res.json(dbWorkouts);
+  })
+  .catch(err => {
+    res.json(err);
+  });
 });
 
 
