@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const db = require("./models");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 
@@ -39,57 +39,48 @@ app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/stats.html"));
 });
 
-// Get Last Workout
-// app.get("/api/workouts", (req,res) => {
-  // db.Workout.find({  })
-  // .populate("workouts")
-  // .then(dbWorkouts => {
-  //   console.log(dbWorkouts);
+// Create new Workout from exercises that were added
+app.post("/api/workouts", ({body}, res) => {
 
-  //   res.json(dbWorkouts);
-  // })
-  // .catch(err => {
-  //   res.json(err);
-  // });
+  db.Workout.create(body)
+  .then(dbWorkouts => {
+    console.log(dbWorkouts);
+    res.json(dbWorkouts);
+  })
+  .catch(err => {
+    res.status(400).json(err);
+  });
+
+});
+
+// Get Last Workout
+app.get("/api/workouts", (req,res) => {
+  db.Workout.find({  })
+  .populate("workouts")
+  .then(dbWorkouts => {
+    console.log(dbWorkouts);
+
+    res.json(dbWorkouts);
+  })
+  .catch(err => {
+    res.json(err);
+  });
   
-// });
+});
 
 
 // Add exercises for NEW workout plan 
 // PUT: /api/workouts/:id
-app.put("/api/workouts/:id", ({body}, res) => {
-  console.log(body.type); // form information
-  let data = "";
-  if (body.type === "cardio") {
-    data = "cardio";
-  } else if (body.type === "resistance") {
-    data = "resistance";
-  }
-
-  db.Workout.insert(data)
-    .then(dbExercises => {
-      console.log(dbExercises);
-
-      res.json(dbExercises);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-// Create new Workout from exercises that were added
-app.post("/api/workouts", ({body}, res) => {
-
-  // db.Workout.create(body)
-  // .then(dbWorkouts => {
-  //   console.log(dbWorkouts);
-
-  //   res.json(dbWorkouts);
-  // })
-  // .catch(err => {
-  //   res.status(400).json(err);
-  // });
-
+app.put("/api/workouts/:id", (req, res) => {
+  db.Workout.findByIdAndUpdate({_id: req.params.id}, {
+    $set: {
+      exercises: req.body 
+    }
+  }).then(function(dbWorkout){
+    res.json(dbWorkout); 
+  }).catch(err => {
+    res.status(400).json(err);
+  });
 });
 
 
@@ -97,9 +88,9 @@ app.post("/api/workouts", ({body}, res) => {
 // GET: /api/workouts/range
 app.get("/api/workouts/range", (req, res) => {
   db.Workout.find({})
-  .populate("workouts")
+  .sort({ day: -1 })
   .then(dbWorkouts => {
-    console.log(dbWorkouts);
+    // console.log(dbWorkouts);
 
     res.json(dbWorkouts);
   })
