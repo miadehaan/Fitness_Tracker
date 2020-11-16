@@ -63,8 +63,7 @@ app.get("/api/workouts", (req,res) => {
   db.Workout.find({  })
   .populate("workouts")
   .then(dbWorkouts => {
-    console.log(dbWorkouts);
-
+    // console.log(dbWorkouts);
     res.json(dbWorkouts);
   })
   .catch(err => {

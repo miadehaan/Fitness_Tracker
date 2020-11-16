@@ -17,12 +17,16 @@ body {
 }
 
 nav {
-  background-color: #5793fd;
+  /* background-color: #5793fd; */
+  background-image: url("gymheader.jpg");
+  background-size: cover;
   color: #ffffff;
-  height: 80px;
+  height: 350px;
   padding: 10px;
   line-height: 3;
-  font-size: 1.2rem;
+  /* font-size: 1.2rem; */
+  font-size: 50px;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 a,
@@ -42,6 +46,16 @@ header {
 
 header h1 {
   transform: skewX(-2deg);
+}
+
+.buttons .continueBtn {
+  background-color: rgb(175, 48, 48);
+  color: white;
+}
+
+.buttons .newBtn {
+  background-color: rgb(88, 85, 85);
+  color: white;
 }
 
 select {
@@ -147,6 +161,16 @@ form::after {
   width: 100%;
 }
 
+.exercise .buttons .completeBtn {
+  background-color: rgb(175, 48, 48);
+  color: white;
+}
+
+.exercise .buttons .addBtn {
+  background-color: rgb(88, 85, 85);
+  color: white;
+}
+
 button {
   display: block;
   border: none;
@@ -157,6 +181,7 @@ button {
   padding: 10px;
   background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
 }
+
 
 #toast {
   border-radius: 4px;
