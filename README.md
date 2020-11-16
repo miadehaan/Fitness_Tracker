@@ -1,17 +1,13 @@
 # Fitness_Tracker
 Fitness Tracker using a NoSQL DB
 
-# Budget_Tracker
-Budget tracker with offline capabilities.
-
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 
 ## Description 
-This application utilizes Node, Express, ...
-This application is deployed using Heroku.
+This application utilizes Node, Express, & MongoDB. The user is able to add new exercises and workouts. The overall stats are then displayed on various charts and graphs. This application is deployed using Heroku.
 
-Deployed Application: https:// ...TBD
+Deployed Application: https://mysterious-fjord-83289.herokuapp.com/?id=5fb0afa31ef3450017eb9013 
 
 Github Repository: https://github.com/miadehaan/Fitness_Tracker
 
@@ -41,7 +37,11 @@ This app is a ...
 
 ## Example
 
-![Webpage]()
+![demo1](/demo_imgs/demo1.PNG)
+
+![demo2](/demo_imgs/demo2.PNG)
+
+![demo3](/demo_imgs/demo3.PNG)
 
     
 ## License
